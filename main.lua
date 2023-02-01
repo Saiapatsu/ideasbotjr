@@ -13,4 +13,4 @@ client:run(require("fs").readFileSync("./TOKEN"))
 -- repl
 -- note: repl.lua has been modified to support passing an environment
 -- repl will require a bunch of stuff and put them in there by default
-local repl = require "repl" (process.stdin.handle, process.stdout.handle, "REPL active", env).start()
+require("repl")(process.stdin.handle, process.stdout.handle, "REPL active", env).start()
