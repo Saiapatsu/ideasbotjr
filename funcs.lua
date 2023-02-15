@@ -43,8 +43,6 @@ guilds = {
 		weekly = "okbud:1070367873891041351",
 		roleFreedom = "936745626048294923", -- rancid
 		roleDownvote = "1070364517604802671", -- redditor
-		msgCanDoAnything = function(self, message) return message.member:hasRole(self.roleFreedom) end,
-		msgCanBeDownvoted = function(self, message) return message.member:hasRole(self.roleDownvote) or message.content:find(self.downvote, 1, true) end,
 	},
 	-- Ideas
 	["309088417466023936"] = {
@@ -53,10 +51,15 @@ guilds = {
 		weekly = "Weekly:742160530353160192",
 		roleFreedom = "1075535787363410022", -- unbound
 		roleDownvote = "1075535787363410022", -- downvote
-		msgCanDoAnything = function(self, message) return message.member:hasRole(self.roleFreedom) end,
-		msgCanBeDownvoted = function(self, message) return message.member:hasRole(self.roleDownvote) or message.content:find(self.downvote, 1, true) end,
 	}
 }
+
+function messageCanDoAnything(dataGuild, message)
+	return message.member:hasRole(dataGuild.roleFreedom)
+end
+function messageCanBeDownvoted(dataGuild, message)
+	return message.member:hasRole(dataGuild.roleDownvote) or message.content:find(dataGuild.downvote, 1, true)
+end
 
 --------------------------------------------------
 
@@ -67,10 +70,10 @@ function messageHandlerShowcase(message)
 	if dataGuild == nil then return end 
 	if messageIsImage(message) then
 		async(message.addReaction, message, dataGuild.upvote)
-		if dataGuild:msgCanBeDownvoted(message) then
+		if messageCanBeDownvoted(dataGuild, message) then
 			message:addReaction(dataGuild.downvote)
 		end
-	elseif dataGuild:msgCanDoAnything(message) then
+	elseif messageCanDoAnything(dataGuild, message) then
 		-- keep it
 	else
 		scold(message)
@@ -82,7 +85,7 @@ function messageHandlerWeekly(message)
 	if dataGuild == nil then return end
 	if messageIsImage(message) then
 		message:addReaction(dataGuild.weekly)
-	elseif dataGuild:msgCanDoAnything(message) then
+	elseif messageCanDoAnything(dataGuild, message) then
 		-- keep it
 	else
 		scold(message)
@@ -102,7 +105,7 @@ channelsReaction = {}
 function reactionHandlerShowcase(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote and not dataGuild:msgCanDoAnything(message) then
+	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote and not messageCanDoAnything(dataGuild, message) then
 		-- Remove user's upvote and own upvote and add downvote
 		async(message.removeReaction, message, dataGuild.upvote)
 		async(message.removeReaction, message, dataGuild.upvote, userId)
@@ -117,7 +120,7 @@ end
 function reactionHandlerWeekly(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly and not dataGuild:msgCanDoAnything(message) then
+	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly and not messageCanDoAnything(dataGuild, message) then
 		message:removeReaction(dataGuild.weekly, userId)
 	end
 end
