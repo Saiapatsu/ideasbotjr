@@ -57,13 +57,12 @@ guilds = {
 function messageCanDoAnything(dataGuild, message)
 	return message.member:hasRole(dataGuild.roleFreedom)
 end
+
 function messageCanBeDownvoted(dataGuild, message)
 	return message.member:hasRole(dataGuild.roleDownvote) or message.content:find(dataGuild.downvote, 1, true)
 end
 
 --------------------------------------------------
-
-local channelsMessage = {}
 
 function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
@@ -98,17 +97,7 @@ function messageHandlerBots(message)
 	
 end
 
-channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #qeeqe
-channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
-channelsMessage["574211056973512704"] = messageHandlerBots -- #tex1
-
-channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
-channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
-channelsMessage["309121149592403980"] = messageHandlerBots -- #tex1
-
 --------------------------------------------------
-
-channelsReaction = {}
 
 function reactionHandlerShowcase(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
@@ -132,6 +121,20 @@ function reactionHandlerWeekly(reaction, userId, message)
 		message:removeReaction(dataGuild.weekly, userId)
 	end
 end
+
+--------------------------------------------------
+
+channelsMessage = {}
+
+channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #qeeqe
+channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
+channelsMessage["574211056973512704"] = messageHandlerBots -- #tex1
+
+channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
+channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
+channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+
+channelsReaction = {}
 
 channelsReaction["1070158816001396767"] = reactionHandlerShowcase -- #qeeqe
 channelsReaction["1030063439160295435"] = reactionHandlerWeekly -- #emoji
