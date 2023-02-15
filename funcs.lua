@@ -27,7 +27,7 @@ function messageIsImage(message)
 end
 
 function scold(message)
-	async(message.delete, message)
+	-- async(message.delete, message)
 	local reply = message.channel:sendf("<@%s> Please, only send images and links in this channel.", message.author.id)
 	timer.sleep(4000)
 	reply:delete()
