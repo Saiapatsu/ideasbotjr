@@ -3,6 +3,8 @@
 -- Manage Messages: delete messages and emoji
 -- Add emoji
 
+-- Manage roles (to add/remove the role)
+
 --------------------------------------------------
 
 local env = getfenv()
@@ -39,16 +41,20 @@ guilds = {
 		upvote = "\xE2\x9A\xA0\xEF\xB8\x8F", -- warning
 		downvote = "\xF0\x9F\x90\xB4", -- horse
 		weekly = "okbud:1070367873891041351",
-		canDoAnything = function(member) return member:hasRole("936745626048294923") end, -- rancid
-		canBeDownvoted = function(member) return member:hasRole("1070364517604802671") end, -- redditor
+		roleFreedom = "936745626048294923", -- rancid
+		roleDownvote = "1070364517604802671", -- redditor
+		msgCanDoAnything = function(self, message) return message.member:hasRole(self.roleFreedom) end,
+		msgCanBeDownvoted = function(self, message) return message.member:hasRole(self.roleDownvote) or message.content:find(self.downvote, 1, true) end,
 	},
 	-- Ideas
 	["309088417466023936"] = {
 		upvote = "upvote:539111244842532874",
 		downvote = "downvote:539111244414844929",
 		weekly = "Weekly:742160530353160192",
-		canDoAnything = function(member) return member:hasRole("309090145099972608") end, -- unbound
-		canBeDownvoted = function(member) return member:hasRole("xxxxxxxxx") end, -- downvote
+		roleFreedom = "1075535787363410022", -- unbound
+		roleDownvote = "1075535787363410022", -- downvote
+		msgCanDoAnything = function(self, message) return message.member:hasRole(self.roleFreedom) end,
+		msgCanBeDownvoted = function(self, message) return message.member:hasRole(self.roleDownvote) or message.content:find(self.downvote, 1, true) end,
 	}
 }
 
@@ -61,10 +67,10 @@ function messageHandlerShowcase(message)
 	if dataGuild == nil then return end 
 	if messageIsImage(message) then
 		async(message.addReaction, message, dataGuild.upvote)
-		if dataGuild.canBeDownvoted(message.member) then
+		if dataGuild:msgCanBeDownvoted(message) then
 			message:addReaction(dataGuild.downvote)
 		end
-	elseif dataGuild.canDoAnything(message.member) then
+	elseif dataGuild:msgCanDoAnything(message) then
 		-- keep it
 	else
 		scold(message)
@@ -76,7 +82,7 @@ function messageHandlerWeekly(message)
 	if dataGuild == nil then return end
 	if messageIsImage(message) then
 		message:addReaction(dataGuild.weekly)
-	elseif dataGuild.canDoAnything(message.member) then
+	elseif dataGuild:msgCanDoAnything(message) then
 		-- keep it
 	else
 		scold(message)
@@ -96,7 +102,7 @@ channelsReaction = {}
 function reactionHandlerShowcase(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote and not dataGuild.canDoAnything(message.member) then
+	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote and not dataGuild:msgCanDoAnything(message) then
 		-- Remove user's upvote and own upvote and add downvote
 		async(message.removeReaction, message, dataGuild.upvote)
 		async(message.removeReaction, message, dataGuild.upvote, userId)
@@ -111,7 +117,7 @@ end
 function reactionHandlerWeekly(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly and not dataGuild.canDoAnything(message.member) then
+	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly and not dataGuild:msgCanDoAnything(message) then
 		message:removeReaction(dataGuild.weekly, userId)
 	end
 end
@@ -136,9 +142,9 @@ end
 
 function onReactionAdd(reaction, userId)
 	local message = reaction.message
-	if reaction.message.author.bot then return end
+	if message.author.bot then return end
 	env.reaction = reaction
-	try(channelsReaction[reaction.message.channel.id], reaction, userId, message)
+	try(channelsReaction[message.channel.id], reaction, userId, message)
 end
 
 --------------------------------------------------
