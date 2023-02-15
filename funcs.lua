@@ -92,11 +92,19 @@ function messageHandlerWeekly(message)
 	end
 end
 
+function messageHandlerBots(message)
+	local dataGuild = guilds[message.guild.id]
+	if dataGuild == nil then return end
+	
+end
+
 channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #qeeqe
 channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
+channelsMessage["574211056973512704"] = messageHandlerBots -- #tex1
 
 channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
 channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
+channelsMessage["309121149592403980"] = messageHandlerBots -- #tex1
 
 --------------------------------------------------
 
