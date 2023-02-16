@@ -101,7 +101,19 @@ end
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	
+	if env["nuts" .. message.guild.id] and message.content == ".item" then
+		env["nuts" .. message.guild.id] = nil
+		local reply = message.channel:sendf("<@%s> Sprite Deez Nuts", message.author.id)
+		return
+	end
+	local str = message.content
+	if str:sub(1, 1) ~= "." then return end
+	local word, pos = str:match("^(%S+)()", 2)
+	if word == nil then return end -- space between dot and word
+	print(word, pos)
+	if word == "item" then
+		
+	end
 end
 
 --------------------------------------------------
