@@ -33,6 +33,13 @@ function scold(message)
 	reply:delete()
 end
 
+function messageHasReaction(message, hash)
+	for _,v in pairs(message.reactions) do
+		if v.emojiHash == hash then return true end
+	end
+	return false
+end
+
 --------------------------------------------------
 
 guilds = {
@@ -102,22 +109,25 @@ end
 function reactionHandlerShowcase(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote and not messageCanDoAnything(dataGuild, message) then
-		-- Remove user's upvote and own upvote and add downvote
-		async(message.removeReaction, message, dataGuild.upvote)
-		async(message.removeReaction, message, dataGuild.upvote, userId)
-		-- potentially save a http request?
-		for _,v in pairs(message.reactions) do
-			if v.emojiHash == dataGuild.downvote then return end
+	if messageCanDoAnything(dataGuild, message) then return end
+	if message.author.id == userId and reaction.emojiHash == dataGuild.upvote then
+		-- On self-upvote:
+		-- If there is no downvote, add one, otherwise remove own upvote.
+		-- Afterward, remove user's upvote.
+		if messageHasReaction(message, dataGuild.downvote) then
+			async(message.removeReaction, message, dataGuild.upvote)
+		else
+			async(message.addReaction, message, dataGuild.downvote)
 		end
-		message:addReaction(dataGuild.downvote)
+		message:removeReaction(dataGuild.upvote, userId)
 	end
 end
 
 function reactionHandlerWeekly(reaction, userId, message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly and not messageCanDoAnything(dataGuild, message) then
+	if messageCanDoAnything(dataGuild, message) then return end
+	if message.author.id == userId and reaction.emojiHash == dataGuild.weekly then
 		message:removeReaction(dataGuild.weekly, userId)
 	end
 end
