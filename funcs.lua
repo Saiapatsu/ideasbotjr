@@ -104,6 +104,9 @@ function messageHandlerBots(message)
 	if env["nuts" .. message.guild.id] and message.content == ".item" then
 		env["nuts" .. message.guild.id] = nil
 		local reply = message.channel:sendf("<@%s> Sprite Deez Nuts", message.author.id)
+		print("Gottem\a")
+		timer.sleep(5000)
+		message.channel:send("Hah Gottem")
 		return
 	end
 	local str = message.content
