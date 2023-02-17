@@ -134,7 +134,8 @@ function reactionHandlerShowcase(reaction, userId, message)
 		else
 			async(message.addReaction, message, dataGuild.downvote)
 		end
-		message:removeReaction(dataGuild.upvote, userId)
+		-- Can't have shit without Manage Messages
+		-- message:removeReaction(dataGuild.upvote, userId)
 	end
 end
 
