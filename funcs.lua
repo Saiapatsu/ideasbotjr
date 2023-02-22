@@ -98,11 +98,15 @@ function messageHandlerWeekly(message)
 	end
 end
 
+function deez()
+	nuts309121149592403980 = true
+end
+
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if env["nuts" .. message.guild.id] and message.content == ".item" then
-		env["nuts" .. message.guild.id] = nil
+	if env["nuts" .. message.channel.id] and message.content == ".item" then
+		env["nuts" .. message.channel.id] = nil
 		local reply = message.channel:sendf("<@%s> Sprite Deez Nuts", message.author.id)
 		print("Gottem\a")
 		timer.sleep(5000)
