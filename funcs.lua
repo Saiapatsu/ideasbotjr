@@ -42,6 +42,12 @@ end
 
 --------------------------------------------------
 
+function status()
+	print("\n\n\n" .. os.date() .. "\n\n\n")
+end
+
+--------------------------------------------------
+
 guilds = {
 	-- Test server
 	["517339055831384084"] = {
@@ -71,9 +77,14 @@ end
 
 --------------------------------------------------
 
+function alertme()
+	print(os.date() .. " /!\\ Bot is alive\a")
+end
+
 function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
-	if dataGuild == nil then return end 
+	if dataGuild == nil then return end
+	alertme()
 	if messageIsImage(message) then
 		async(message.addReaction, message, dataGuild.upvote)
 		if messageCanBeDownvoted(dataGuild, message) then
@@ -89,6 +100,7 @@ end
 function messageHandlerWeekly(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
+	alertme()
 	if messageIsImage(message) then
 		message:addReaction(dataGuild.weekly)
 	elseif messageCanDoAnything(dataGuild, message) then
