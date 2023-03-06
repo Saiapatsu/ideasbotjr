@@ -14,6 +14,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+Wed Feb 1 06:00:25 2023 +0200
+This file has been modified by Wist to add a `global` parameter.
+
 --]]
 
 --[[lit-meta
