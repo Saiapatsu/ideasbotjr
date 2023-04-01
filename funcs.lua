@@ -45,6 +45,7 @@ end
 function status()
 	print("\n\n\n" .. os.date() .. "\n\n\n")
 end
+s = status
 
 --------------------------------------------------
 
@@ -110,21 +111,9 @@ function messageHandlerWeekly(message)
 	end
 end
 
-function deez()
-	nuts309121149592403980 = true
-end
-
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	if env["nuts" .. message.channel.id] and message.content == ".item" then
-		env["nuts" .. message.channel.id] = nil
-		local reply = message.channel:sendf("<@%s> Sprite Deez Nuts", message.author.id)
-		print("Gottem\a")
-		timer.sleep(5000)
-		message.channel:send("Hah Gottem")
-		return
-	end
 	local str = message.content
 	if str:sub(1, 1) ~= "." then return end
 	local word, pos = str:match("^(%S+)()", 2)
