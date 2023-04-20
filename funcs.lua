@@ -98,6 +98,8 @@ end
 
 --------------------------------------------------
 
+channelsMessage = {}
+
 function alertme()
 	print(os.date() .. " /!\\ Bot is alive\a")
 end
@@ -167,6 +169,37 @@ function messageHandlerBots(message)
 	end
 end
 
+channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+
+function messageHandlerBots(message)
+	local dataGuild = guilds[message.guild.id]
+	if dataGuild == nil then return end
+	local str = message.content
+	if str:sub(1, 1) ~= "." then return end
+	local word, pos = str:match("^(%S+)()", 2)
+	if word == nil then
+		-- space between dot and word
+		return
+		
+	elseif word == "item" then
+		-- .item
+		-- .item 1
+		-- .item asdasd
+		local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
+		count = math.min(8, tonumber(count) or 1)
+		
+		for i = 1, count do
+			staticRope[i] = string.format(
+				"%s %s",
+				pick(listModObject),
+				pick(listObjects))
+		end
+		
+		staticRope[count + 1] = nil
+		message:reply(table.concat(staticRope, "\n"))
+	end
+end
+
 --------------------------------------------------
 
 function reactionHandlerShowcase(reaction, userId, message)
@@ -197,8 +230,6 @@ function reactionHandlerWeekly(reaction, userId, message)
 end
 
 --------------------------------------------------
-
-channelsMessage = {}
 
 -- channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #boten
 -- channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
