@@ -230,13 +230,18 @@ function messageHandlerBots(message)
 	if str:sub(1, 1) ~= "." then return end
 	local word, pos = str:match("^(%S+)()", 2)
 	if word == nil then
-		-- space between dot and word
-		return
-		
+		-- space between dot and word: do nothing
 	elseif word == "item" then
 		generator(makeItem, message, str, pos)
 	elseif word == "dungeon" then
 		generator(makeDungeon, message, str, pos)
+	elseif word == "help" then
+		message:reply([[
+I manage the reactions in <#]] .. dataGuild.showcase .. [[> and <#]] .. dataGuild.weekly .. [[> since 2023-02-01 and generate item ideas in <#]] .. dataGuild.bots .. [[ since 2023-04-20.
+Read my source code at: <https://github.com/Saiapatsu/ideasbotjr/blob/master/funcs.lua>
+To get a downvote, upvote your own message in #showcase (and then remove it because you should not self-upvote), write <:]] .. dataGuild.downvote .. [[> in your message (can't edit it in yet), ask an Unbound to downvote you or ask staff for the <@&]] .. dataGuild.roleDownvote .. [[> role.
+Write .item in this channel to get an item name and .dungeon to get a dungeon name.
+]])
 	end
 end
 
