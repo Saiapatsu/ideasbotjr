@@ -1,4 +1,4 @@
-Weapons
+# Weapons
 	Dagger ;pl Daggers
 		Blades ;pl ;nuprod
 		Knife
@@ -37,7 +37,7 @@ Weapons
 		Pistol
 		Rifle
 
-Abilities
+# Abilities
 	Cloak
 	Poison
 	Prism
@@ -59,7 +59,7 @@ Abilities
 	Wakizashi
 	Sheath
 
-Armor
+# Armor
 	Hide
 	Robe
 	Armor
@@ -73,7 +73,7 @@ Ring
 Ring
 Ring
 Ring
-Bananaphone
+# Bananaphone
 
 # https://superobot1.itch.io/relic-generator
 # https://www.rangen.co.uk/names/abodegen.php
@@ -82,6 +82,6 @@ Bananaphone
 # https://codexnomina.com/magic-item-names/
 # https://thestoryshack.com/tools/artifact-name-generator/
 # https://myraah.io/brandnames/item-name-ideas
-# 
+
 # The big list in js was from:
 # https://www.fantasynamegenerators.com/artifact-names.php
