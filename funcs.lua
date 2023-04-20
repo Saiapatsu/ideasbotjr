@@ -133,10 +133,40 @@ function messageHandlerWeekly(message)
 	end
 end
 
+local chances = {} -- [()->()]: number
+local function commit(chance, fn)
+	chances[fn] = chance
+	return fn
+end
+
 local listModObject = parseListFromFile "mod object"
 local listModLocation = parseListFromFile "mod location"
 local listLocations = parseListFromFile "locations"
 local listObjects = parseListFromFile "objects"
+
+local makeItemModObject = commit(#listModObject * #listObjects, function()
+	return string.format(
+		"%s %s",
+		pick(listModObject),
+		pick(listObjects))
+end)
+local makeItemObjectOfTheMod = commit(#listModObject * #listObjects, function()
+	return string.format(
+		"%s of the %s",
+		pick(listObjects),
+		pick(listModObject))
+end)
+
+local function makeItem()
+	local aaa = chances[makeItemModObject]
+	local max = aaa + chances[makeItemObjectOfTheMod]
+	local n = math.random(max)
+	if n > aaa then
+		return makeItemObjectOfTheMod()
+	else
+		return makeItemModObject()
+	end
+end
 
 local staticRope = {}
 
@@ -158,13 +188,10 @@ function messageHandlerBots(message)
 		count = math.min(8, tonumber(count) or 1)
 		
 		for i = 1, count do
-			staticRope[i] = string.format(
-				"%s %s",
-				pick(listModObject),
-				pick(listObjects))
+			staticRope[i] = makeItem()
 		end
-		
 		staticRope[count + 1] = nil
+		
 		message:reply(table.concat(staticRope, "\n"))
 	end
 end
@@ -189,13 +216,10 @@ function messageHandlerBots(message)
 		count = math.min(8, tonumber(count) or 1)
 		
 		for i = 1, count do
-			staticRope[i] = string.format(
-				"%s %s",
-				pick(listModObject),
-				pick(listObjects))
+			staticRope[i] = makeItem()
 		end
-		
 		staticRope[count + 1] = nil
+		
 		message:reply(table.concat(staticRope, "\n"))
 	end
 end
@@ -238,6 +262,9 @@ channelsMessage["1070158816001396767"] = messageHandlerBots -- #boten
 channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
 channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
 -- channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+if not channelsMessage["309121149592403980"] then
+	channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+end
 
 channelsReaction = {}
 
