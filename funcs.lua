@@ -11,6 +11,10 @@
 local fs = require "fs"
 local env = getfenv()
 
+local staticRope = {}
+
+--------------------------------------------------
+
 function async(fn, ...)
 	return coroutine.wrap(fn)(...)
 end
@@ -42,14 +46,19 @@ function messageHasReaction(message, hash)
 	return false
 end
 
+function alertme()
+	print(os.date() .. " /!\\ Bot is alive\a")
+end
+
 --------------------------------------------------
 
 local function parseListFromFile(path)
 	local list = {}
 	for line in fs.readFileSync(path):gmatch("[^\r\n]+") do
 		-- completely ignoring bayonet for now
-		line = line:match("^[ \t]*([^;]*)")
-		if line:sub(1, 1) ~= "#" then
+		line = line:match("^[ \t]*([^;#]*)") -- strip leading tabs, comment and trailing ;bayonet
+		line = line:match("(.-) *$") -- strip trailing spaces from bayonet
+		if line ~= "" then
 			table.insert(list, line)
 		end
 	end
@@ -100,10 +109,6 @@ end
 
 channelsMessage = {}
 
-function alertme()
-	print(os.date() .. " /!\\ Bot is alive\a")
-end
-
 function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
@@ -133,6 +138,8 @@ function messageHandlerWeekly(message)
 	end
 end
 
+--------------------------------------------------
+
 local chances = {} -- [()->()]: number
 local function commit(chance, fn)
 	chances[fn] = chance
@@ -156,6 +163,18 @@ local makeItemObjectOfTheMod = commit(#listModObject * #listObjects, function()
 		pick(listObjects),
 		pick(listModObject))
 end)
+local makeDungeonModObject = commit(#listModLocation * #listLocations, function()
+	return string.format(
+		"%s %s",
+		pick(listModLocation),
+		pick(listLocations))
+end)
+local makeDungeonPlaceOfTheMod = commit(#listModLocation * #listLocations, function()
+	return string.format(
+		"%s of the %s",
+		pick(listLocations),
+		pick(listModLocation))
+end)
 
 local function makeItem()
 	local aaa = chances[makeItemModObject]
@@ -168,35 +187,31 @@ local function makeItem()
 	end
 end
 
-local staticRope = {}
-
-function messageHandlerBots(message)
-	local dataGuild = guilds[message.guild.id]
-	if dataGuild == nil then return end
-	local str = message.content
-	if str:sub(1, 1) ~= "." then return end
-	local word, pos = str:match("^(%S+)()", 2)
-	if word == nil then
-		-- space between dot and word
-		return
-		
-	elseif word == "item" then
-		-- .item
-		-- .item 1
-		-- .item asdasd
-		local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
-		count = math.min(8, tonumber(count) or 1)
-		
-		for i = 1, count do
-			staticRope[i] = makeItem()
-		end
-		staticRope[count + 1] = nil
-		
-		message:reply(table.concat(staticRope, "\n"))
+local function makeDungeon()
+	local n = math.random(2)
+	if n == 1 then
+		return makeDungeonPlaceOfTheMod()
+	else
+		return makeDungeonModObject()
 	end
 end
 
-channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+local function generator(fn, message, str, pos)
+	-- .command
+	-- .command 1
+	-- .command asdasd
+	local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
+	count = math.min(8, tonumber(count) or 1)
+	
+	for i = 1, count do
+		staticRope[i] = fn()
+	end
+	staticRope[count + 1] = nil
+	
+	message:reply(table.concat(staticRope, "\n"))
+end
+
+--------------------------------------------------
 
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
@@ -209,18 +224,9 @@ function messageHandlerBots(message)
 		return
 		
 	elseif word == "item" then
-		-- .item
-		-- .item 1
-		-- .item asdasd
-		local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
-		count = math.min(8, tonumber(count) or 1)
-		
-		for i = 1, count do
-			staticRope[i] = makeItem()
-		end
-		staticRope[count + 1] = nil
-		
-		message:reply(table.concat(staticRope, "\n"))
+		generator(makeItem, message, str, pos)
+	elseif word == "dungeon" then
+		generator(makeDungeon, message, str, pos)
 	end
 end
 
@@ -261,10 +267,7 @@ channelsMessage["1070158816001396767"] = messageHandlerBots -- #boten
 
 channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
 channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
--- channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
-if not channelsMessage["309121149592403980"] then
-	channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
-end
+channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
 
 channelsReaction = {}
 
