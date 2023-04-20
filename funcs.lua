@@ -8,6 +8,7 @@
 
 --------------------------------------------------
 
+local fs = require "fs"
 local env = getfenv()
 
 function async(fn, ...)
@@ -39,6 +40,24 @@ function messageHasReaction(message, hash)
 		if v.emojiHash == hash then return true end
 	end
 	return false
+end
+
+--------------------------------------------------
+
+local function parseListFromFile(path)
+	local list = {}
+	for line in fs.readFileSync(path):gmatch("[^\r\n]+") do
+		-- completely ignoring bayonet for now
+		line = line:match("^[ \t]*([^;]*)")
+		if line:sub(1, 1) ~= "#" then
+			table.insert(list, line)
+		end
+	end
+	return list
+end
+
+local function pick(tbl)
+	return tbl[math.random(#tbl)]
 end
 
 --------------------------------------------------
@@ -112,6 +131,13 @@ function messageHandlerWeekly(message)
 	end
 end
 
+local listModObject = parseListFromFile "mod object"
+local listModLocation = parseListFromFile "mod location"
+local listLocations = parseListFromFile "locations"
+local listObjects = parseListFromFile "objects"
+
+local staticRope = {}
+
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
@@ -123,7 +149,21 @@ function messageHandlerBots(message)
 		return
 		
 	elseif word == "item" then
+		-- .item
+		-- .item 1
+		-- .item asdasd
+		local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
+		count = math.min(8, tonumber(count) or 1)
 		
+		for i = 1, count do
+			staticRope[i] = string.format(
+				"%s %s",
+				pick(listModObject),
+				pick(listObjects))
+		end
+		
+		staticRope[count + 1] = nil
+		message:reply(table.concat(staticRope, "\n"))
 	end
 end
 
