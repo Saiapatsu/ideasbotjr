@@ -1,0 +1,87 @@
+Weapons
+	Dagger ;pl Daggers
+		Blades ;pl ;nuprod
+		Knife
+		Fang
+		Tooth
+		Stinger
+		Cutter
+		Ripper
+	Bow
+		Longbow ;nuprod
+		Crossbow
+		Reflex Bow
+		Arbalest
+		Harp
+	Staff
+		Spellblade ;nuprod
+	Wand
+		Morning Star ;nuprod
+		Caduceus
+		Crucifix
+	Sword ;pl Swords
+		Flail ;nuprod
+		Rapier
+		Blade
+		Cutlass
+		Greatsword
+		Longsword
+	Katana ;pl Katanas
+		Tachi ;pl ;nuprod
+	Axe
+		Battle Axe
+		Cleaver
+		Scythe
+		Sickle
+	Gun
+		Pistol
+		Rifle
+
+Abilities
+	Cloak
+	Poison
+	Prism
+	Quiver
+	Trap
+	Star
+		Shuriken
+		Kunai
+	Spell
+	Skull
+	Orb
+	Tome
+	Scepter
+	Mace
+	Lute
+	Helmet
+	Shield
+	Seal
+	Wakizashi
+	Sheath
+
+Armor
+	Hide
+	Robe
+	Armor
+		Platemail
+		Scalemail
+
+Ring
+Ring
+Ring
+Ring
+Ring
+Ring
+Ring
+Bananaphone
+
+# https://superobot1.itch.io/relic-generator
+# https://www.rangen.co.uk/names/abodegen.php
+# https://www.rangen.co.uk/items/artigen.php
+# https://www.roll4.net/generators/other-generators/magic-item-name-generator
+# https://codexnomina.com/magic-item-names/
+# https://thestoryshack.com/tools/artifact-name-generator/
+# https://myraah.io/brandnames/item-name-ideas
+# 
+# The big list in js was from:
+# https://www.fantasynamegenerators.com/artifact-names.php
