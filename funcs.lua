@@ -11,7 +11,11 @@
 local fs = require "fs"
 local env = getfenv()
 
+-- Reused as a rope to reduce GC pressure
 local staticRope = {}
+
+channelsMessage = {}
+channelsReaction = {}
 
 --------------------------------------------------
 
@@ -78,23 +82,31 @@ s = status
 
 --------------------------------------------------
 
+guildTest = {
+	upvote = "\xE2\x9A\xA0\xEF\xB8\x8F", -- warning
+	downvote = "\xF0\x9F\x90\xB4", -- horse
+	weekly = "okbud:1070367873891041351",
+	roleFreedom = "936745626048294923", -- rancid
+	roleDownvote = "1070364517604802671", -- redditor
+	showcase = "1070158816001396767", -- #boten
+	weekly = "1030063439160295435", -- #emoji
+	bots = "1070158816001396767", -- #boten
+}
+
+guildIdeas = {
+	upvote = "upvote:539111244842532874",
+	downvote = "downvote:539111244414844929",
+	weekly = "Weekly:742160530353160192",
+	roleFreedom = "309090145099972608", -- unbound
+	roleDownvote = "1075535684368081108", -- downvote
+	showcase = "520457693979213833",
+	weekly = "742157612879183993",
+	bots = "309121149592403980",
+}
+
 guilds = {
-	-- Test server
-	["517339055831384084"] = {
-		upvote = "\xE2\x9A\xA0\xEF\xB8\x8F", -- warning
-		downvote = "\xF0\x9F\x90\xB4", -- horse
-		weekly = "okbud:1070367873891041351",
-		roleFreedom = "936745626048294923", -- rancid
-		roleDownvote = "1070364517604802671", -- redditor
-	},
-	-- Ideas
-	["309088417466023936"] = {
-		upvote = "upvote:539111244842532874",
-		downvote = "downvote:539111244414844929",
-		weekly = "Weekly:742160530353160192",
-		roleFreedom = "1075535787363410022", -- unbound
-		roleDownvote = "1075535787363410022", -- downvote
-	}
+	["517339055831384084"] = guildTest,
+	["309088417466023936"] = guildIdeas,
 }
 
 function messageCanDoAnything(dataGuild, message)
@@ -106,8 +118,6 @@ function messageCanBeDownvoted(dataGuild, message)
 end
 
 --------------------------------------------------
-
-channelsMessage = {}
 
 function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
@@ -261,21 +271,19 @@ end
 
 --------------------------------------------------
 
--- channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #boten
--- channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
-channelsMessage["1070158816001396767"] = messageHandlerBots -- #boten
+local guild = guildTest
 
-channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
-channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
-channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+channelsMessage[guild.bots] = messageHandlerBots
+channelsReaction[guild.showcase] = reactionHandlerShowcase
+channelsReaction[guild.weekly] = reactionHandlerWeekly
 
-channelsReaction = {}
+local guild = guildIdeas
 
-channelsReaction["1070158816001396767"] = reactionHandlerShowcase -- #qeeqe
-channelsReaction["1030063439160295435"] = reactionHandlerWeekly -- #emoji
-
-channelsReaction["520457693979213833"] = reactionHandlerShowcase -- #showcase
-channelsReaction["742157612879183993"] = reactionHandlerWeekly -- #weekly
+channelsMessage[guild.showcase] = messageHandlerShowcase
+channelsMessage[guild.weekly] = messageHandlerWeekly
+channelsMessage[guild.bots] = messageHandlerBots
+channelsReaction[guild.showcase] = reactionHandlerShowcase
+channelsReaction[guild.weekly] = reactionHandlerWeekly
 
 --------------------------------------------------
 
