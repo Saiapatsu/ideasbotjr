@@ -1,8 +1,9 @@
 -- Read messages
 -- Send messages
--- Manage Messages: delete messages and emoji
 -- Add emoji
 
+-- Moderation perms, unusable without verification >:(
+-- Manage Messages: delete messages and emoji
 -- Manage roles (to add/remove the role)
 
 --------------------------------------------------
@@ -117,9 +118,11 @@ function messageHandlerBots(message)
 	local str = message.content
 	if str:sub(1, 1) ~= "." then return end
 	local word, pos = str:match("^(%S+)()", 2)
-	if word == nil then return end -- space between dot and word
-	print(word, pos)
-	if word == "item" then
+	if word == nil then
+		-- space between dot and word
+		return
+		
+	elseif word == "item" then
 		
 	end
 end
@@ -157,13 +160,13 @@ end
 
 channelsMessage = {}
 
-channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #qeeqe
-channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
-channelsMessage["574211056973512704"] = messageHandlerBots -- #tex1
+-- channelsMessage["1070158816001396767"] = messageHandlerShowcase -- #boten
+-- channelsMessage["1030063439160295435"] = messageHandlerWeekly -- #emoji
+channelsMessage["1070158816001396767"] = messageHandlerBots -- #boten
 
 channelsMessage["520457693979213833"] = messageHandlerShowcase -- #showcase
 channelsMessage["742157612879183993"] = messageHandlerWeekly -- #weekly
-channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
+-- channelsMessage["309121149592403980"] = messageHandlerBots -- #bots
 
 channelsReaction = {}
 
