@@ -17,6 +17,11 @@ local staticRope = {}
 channelsMessage = {}
 channelsReaction = {}
 
+local msgConsole = {
+	fake = true,
+	reply = function(self, ...) return print(...) end,
+}
+
 --------------------------------------------------
 
 function async(fn, ...)
@@ -213,8 +218,11 @@ local function generator(fn, message, str, pos)
 	-- .command
 	-- .command 1
 	-- .command asdasd
+	-- Parse amount of things to generate, limit it to a small number unless console
 	local count, pos = string.match(str, "^%s*([^ ]*)()", pos)
-	count = math.min(8, tonumber(count) or 1)
+	if not message.fake then
+		count = math.min(8, tonumber(count) or 1)
+	end
 	
 	for i = 1, count do
 		staticRope[i] = fn()
@@ -223,6 +231,10 @@ local function generator(fn, message, str, pos)
 	
 	message:reply(table.concat(staticRope, "\n"))
 end
+
+-- for the console
+function item(str) return generator(makeItem, msgConsole, tostring(str), 1) end
+function dungeon(str) return generator(makeDungeon, msgConsole, tostring(str), 1) end
 
 --------------------------------------------------
 
