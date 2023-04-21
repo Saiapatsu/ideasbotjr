@@ -15,6 +15,9 @@
 		Harp
 	Staff
 		Spellblade ;nuprod
+		Staff
+		Staff
+		Staff
 	Wand
 		Morning Star ;nuprod
 		Caduceus
@@ -29,30 +32,32 @@
 		Saber
 	Katana ;pl Katanas
 		Tachi ;pl ;nuprod
+		Katana
+		Katana
+		Katana
 	Axe
 		Battle Axe
 		Cleaver
-	Tool
-		Scythe
-		Sickle
 		Hatchet
+	Tool
 		Pickaxe
 		Drill
-		Glue
-		Saw
-		Ruler
 		Magnet
 		Gear
-		Optics
 		Lens
-		Gloves
-		Wrench
-		Scissors
-		Screwdriver
-		Nail
 		Harpoon
 		Hammer
 		Chisel
+		Nail
+		Scythe
+		Sickle
+		# Glue
+		# Saw
+		# Ruler
+		# Optics
+		# Wrench
+		# Scissors
+		# Screwdriver
 	Spear
 		Pike
 		Trident
@@ -72,7 +77,7 @@
 		Mine
 		Bomb
 		Grenade
-	Ammunition
+	# Ammunition
 		Bullet
 		Arrow
 		Bolt
@@ -118,20 +123,22 @@
 		Mantle
 	Robe
 		Shroud
-		Bathrobe
-		
+		Silk
+		# Bathrobe
 	Armor
 		Breastplate
 		Platemail
 		Scalemail
 		Plating
+	# Clothing
+		Gloves
 
 # Objects
 	Doohickey
 	Gem
 		Crystal
 	Pommel
-	Umbrella
+	# Umbrella ;silly
 	Cuffs ;pl
 	Charm
 	Rune
