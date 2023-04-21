@@ -156,10 +156,18 @@ local function commit(chance, fn)
 	return fn
 end
 
-local listModObject = parseListFromFile "mod object"
-local listModLocation = parseListFromFile "mod location"
+-- Append all table arguments into first table
+local function append(a, b, ...)
+	if b == nil then return a end
+	for k,v in pairs(b) do a[k] = v end
+	return append(a, ...)
+end
+
+local listModObject = parseListFromFile "mod object" -- object only
+local listModLocationObject = parseListFromFile "mod location object" -- object and location common
 local listLocations = parseListFromFile "locations"
 local listObjects = parseListFromFile "objects"
+append(listModObject, listModLocationObject)
 
 local makeItemModObject = commit(#listModObject * #listObjects, function()
 	return string.format(
@@ -173,17 +181,17 @@ local makeItemObjectOfTheMod = commit(#listModObject * #listObjects, function()
 		pick(listObjects),
 		pick(listModObject))
 end)
-local makeDungeonModObject = commit(#listModLocation * #listLocations, function()
+local makeDungeonModObject = commit(#listModLocationObject * #listLocations, function()
 	return string.format(
 		"%s %s",
-		pick(listModLocation),
+		pick(listModLocationObject),
 		pick(listLocations))
 end)
-local makeDungeonPlaceOfTheMod = commit(#listModLocation * #listLocations, function()
+local makeDungeonPlaceOfTheMod = commit(#listModLocationObject * #listLocations, function()
 	return string.format(
 		"%s of the %s",
 		pick(listLocations),
-		pick(listModLocation))
+		pick(listModLocationObject))
 end)
 
 local function makeItem()
