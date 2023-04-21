@@ -169,29 +169,24 @@ local listLocations = parseListFromFile "locations"
 local listObjects = parseListFromFile "objects"
 append(listModObject, listModLocationObject)
 
+local function juxtapose(a, b)
+	return string.format("%s %s", pick(a), pick(b))
+end
+local function ofthe(a, b)
+	return string.format("%s of the %s", pick(a), pick(b))
+end
+
 local makeItemModObject = commit(#listModObject * #listObjects, function()
-	return string.format(
-		"%s %s",
-		pick(listModObject),
-		pick(listObjects))
+	return juxtapose(listModObject, listObjects)
 end)
 local makeItemObjectOfTheMod = commit(#listModObject * #listObjects, function()
-	return string.format(
-		"%s of the %s",
-		pick(listObjects),
-		pick(listModObject))
+	return ofthe(listObjects, listModObject)
 end)
 local makeDungeonModObject = commit(#listModLocationObject * #listLocations, function()
-	return string.format(
-		"%s %s",
-		pick(listModLocationObject),
-		pick(listLocations))
+	return juxtapose(listModLocationObject, listLocations)
 end)
 local makeDungeonPlaceOfTheMod = commit(#listModLocationObject * #listLocations, function()
-	return string.format(
-		"%s of the %s",
-		pick(listLocations),
-		pick(listModLocationObject))
+	return ofthe(listLocations, listModLocationObject)
 end)
 
 local function makeItem()
