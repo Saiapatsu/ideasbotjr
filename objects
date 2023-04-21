@@ -26,16 +26,60 @@
 		Cutlass
 		Greatsword
 		Longsword
+		Saber
 	Katana ;pl Katanas
 		Tachi ;pl ;nuprod
 	Axe
 		Battle Axe
 		Cleaver
+	Tool
 		Scythe
 		Sickle
+		Hatchet
+		Pickaxe
+		Drill
+		Glue
+		Saw
+		Ruler
+		Magnet
+		Gear
+		Optics
+		Lens
+		Gloves
+		Wrench
+		Scissors
+		Screwdriver
+		Nail
+		Harpoon
+		Hammer
+		Chisel
+	Spear
+		Pike
+		Trident
+		Stick
+	Fists
+		Knuckles ;pl
+		Katar
 	Gun
 		Pistol
 		Rifle
+		Cannon
+		Blaster
+		Launcher
+		Laser
+		Mortar
+	Explosives ;pl
+		Mine
+		Bomb
+		Grenade
+	Ammunition
+		Bullet
+		Arrow
+		Bolt
+		Missile
+	# Throwable
+		Boomerang
+	Whip
 
 # Abilities
 	Cloak
@@ -46,34 +90,99 @@
 	Star
 		Shuriken
 		Kunai
-	Spell
 	Skull
 	Orb
 	Tome
+		Book
+		Grimoire
+	Spell
+		Spellbook
 	Scepter
-	Mace
-	Lute
 	Helmet
+		Kabuto
+		Cap
 	Shield
 	Seal
-	Wakizashi
-	Sheath
+	Mace ;nuprod
+	Wakizashi ;nuprod
+	Sheath ;nuprod
+	Lute ;nuprod
+		# Harp is already a bow
+		Flute
+		Violin
 
 # Armor
 	Hide
+		Skin
+		Oilskin
+		Mantle
 	Robe
+		Shroud
+		Bathrobe
+		
 	Armor
+		Breastplate
 		Platemail
 		Scalemail
+		Plating
 
-Ring
-Ring
-Ring
-Ring
-Ring
-Ring
-Ring
-# Bananaphone
+# Objects
+	Doohickey
+	Gem
+		Crystal
+	Pommel
+	Umbrella
+	Cuffs ;pl
+	Charm
+	Rune
+
+# Consumables
+	Food
+		Snack
+		Treat
+		Drink
+	Potion
+		Draught
+		Elixir
+	Ambrosia
+	Fruit
+	Cake
+
+# Alchemy
+	Horn
+	Powder ;uc
+		Dust ;uc
+	Ether ;uc
+	Substance
+	Ingredient
+	Essence
+	Grime
+	Incense
+	Herb
+
+Jewelry
+	Ring
+	Ring
+	Ring
+	Ring
+	Ring
+	Ring
+	Ring
+	# Bananaphone
+	Amulet
+	Amulet
+
+# Shapes
+	# Pipe
+	# Tube
+	# Cube
+	# Tetrahedron
+	# Sphere
+	# Shape
+	# Torus
+	# Pyramid
+	# Cone
+	# Cylinder
 
 # https://superobot1.itch.io/relic-generator
 # https://www.rangen.co.uk/names/abodegen.php
