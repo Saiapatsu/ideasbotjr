@@ -55,8 +55,8 @@ function messageHasReaction(message, hash)
 	return false
 end
 
-function alertme()
-	print(os.date() .. " /!\\ Bot is alive\a")
+function alertme(where)
+	print(os.date() .. " /!\\ Bot is alive in \a" .. where)
 end
 
 --------------------------------------------------
@@ -77,13 +77,6 @@ end
 local function pick(tbl)
 	return tbl[math.random(#tbl)]
 end
-
---------------------------------------------------
-
-function status()
-	print("\n\n\n" .. os.date() .. "\n\n\n")
-end
-s = status
 
 --------------------------------------------------
 
@@ -127,7 +120,7 @@ end
 function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	alertme()
+	alertme("showcase")
 	if messageIsImage(message) then
 		async(message.addReaction, message, dataGuild.upvote)
 		if messageCanBeDownvoted(dataGuild, message) then
@@ -143,7 +136,7 @@ end
 function messageHandlerWeekly(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
-	alertme()
+	alertme("weekly")
 	if messageIsImage(message) then
 		message:addReaction(dataGuild.weekly)
 	elseif messageCanDoAnything(dataGuild, message) then
@@ -243,6 +236,7 @@ function messageHandlerBots(message)
 	if dataGuild == nil then return end
 	local str = message.content
 	if str:sub(1, 1) ~= "." then return end
+	alertme("bots")
 	local word, pos = str:match("^(%S+)()", 2)
 	if word == nil then
 		-- space between dot and word: do nothing
