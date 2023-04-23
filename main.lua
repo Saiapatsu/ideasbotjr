@@ -1,6 +1,7 @@
 -- hot reload
 local env = getfenv()
 function reload() setfenv(assert(loadfile("funcs.lua")), env)() end
+r = reload -- shortcut
 reload()
 
 -- discordia one-time setup
