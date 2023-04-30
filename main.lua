@@ -6,7 +6,7 @@ reload()
 
 -- discordia one-time setup
 discordia = require "discordia"
-client = discordia.Client()
+client = discordia.Client({logFile = "NUL"})
 client:on("ready", function() return onReady() end)
 client:on("messageCreate", function(message) return onMessageCreate(message) end)
 client:on("reactionAdd", function(reaction, userId) return onReactionAdd(reaction, userId) end)
