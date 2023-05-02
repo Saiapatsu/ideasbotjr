@@ -121,6 +121,7 @@ function messageHandlerShowcase(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
 	alertme("showcase")
+	p(message.content)
 	if messageIsImage(message) then
 		async(message.addReaction, message, dataGuild.upvote)
 		if messageCanBeDownvoted(dataGuild, message) then
@@ -137,6 +138,7 @@ function messageHandlerWeekly(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
 	alertme("weekly")
+	p(message.content)
 	if messageIsImage(message) then
 		message:addReaction(dataGuild.weekly)
 	elseif messageCanDoAnything(dataGuild, message) then
@@ -237,6 +239,7 @@ function messageHandlerBots(message)
 	local str = message.content
 	if str:sub(1, 1) ~= "." then return end
 	alertme("bots")
+	p(message.content)
 	local word, pos = str:match("^(%S+)()", 2)
 	if word == nil then
 		-- space between dot and word: do nothing
