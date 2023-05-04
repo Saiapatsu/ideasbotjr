@@ -233,6 +233,8 @@ function dungeon(str) return generator(makeDungeon, msgConsole, tostring(str), 1
 
 --------------------------------------------------
 
+local nextHelp = 0
+
 function messageHandlerBots(message)
 	local dataGuild = guilds[message.guild.id]
 	if dataGuild == nil then return end
@@ -248,6 +250,10 @@ function messageHandlerBots(message)
 	elseif word == "dungeon" then
 		generator(makeDungeon, message, str, pos)
 	elseif word == "help" then
+		-- Throttle usage of this command just in case
+		local now = os.clock()
+		if now < nextHelp then return end
+		nextHelp = now + 10
 		message:reply([[
 I manage the reactions in <#]] .. dataGuild.showcase .. [[> and <#]] .. dataGuild.weekly .. [[> since 2023-02-01 and generate item ideas in <#]] .. dataGuild.bots .. [[ since 2023-04-20.
 Read my source code and wordlist at: <https://github.com/Saiapatsu/ideasbotjr>
