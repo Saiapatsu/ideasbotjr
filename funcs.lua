@@ -222,9 +222,8 @@ local function generator(fn, message, str, pos)
 	for i = 1, count do
 		staticRope[i] = fn()
 	end
-	staticRope[count + 1] = nil
 	
-	message:reply(table.concat(staticRope, "\n"))
+	message:reply(table.concat(staticRope, "\n", 1, count))
 end
 
 -- for the console
