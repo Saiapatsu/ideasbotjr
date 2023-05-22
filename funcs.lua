@@ -327,5 +327,15 @@ function onReactionAdd(reaction, userId)
 end
 
 --------------------------------------------------
+-- Repl commands
+
+function cls() print("\x1b[H\x1b[2J") end
+
+function uptime()
+	local dt = os.clock() - startTime
+	print(string.format("%.1f hours", dt / (60*60)))
+end
+
+--------------------------------------------------
 
 print("Loaded")

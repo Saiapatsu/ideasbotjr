@@ -18,8 +18,9 @@ function run() client:run(require("fs").readFileSync("./TOKEN")) end
 function stop() client:stop() end
 run()
 
+startTime = os.clock()
+
 -- repl
 -- note: repl.lua has been modified to support passing an environment
 -- repl will require a bunch of stuff and put them in there by default
-function cls() print("\x1b[H\x1b[2J") end
 require("repl")(process.stdin.handle, process.stdout.handle, "REPL active", env).start()
