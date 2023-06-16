@@ -6,6 +6,8 @@
 -- Manage Messages: delete messages and emoji
 -- Manage roles (to add/remove the role)
 
+-- This script creates a lot of global variables so that they can be used in the console.
+
 --------------------------------------------------
 
 local fs = require "fs"
@@ -17,7 +19,8 @@ local staticRope = {}
 channelsMessage = {}
 channelsReaction = {}
 
-local msgConsole = {
+-- Fake message for testing bot commands in the console
+msgConsole = {
 	fake = true,
 	reply = function(self, ...) return print(...) end,
 }
@@ -68,7 +71,8 @@ function messageHasReaction(message, hash)
 end
 
 function alertme(where)
-	print(os.date() .. " /!\\ Bot is alive in \a" .. where)
+	-- Note: \a is bell control character
+	print(os.date() .. " /!\\\a Bot is alive in #" .. where)
 end
 
 --------------------------------------------------
@@ -93,6 +97,7 @@ end
 --------------------------------------------------
 
 guildTest = {
+	guildId = "517339055831384084",
 	upvote = "\xE2\x9A\xA0\xEF\xB8\x8F", -- warning
 	downvote = "\xF0\x9F\x90\xB4", -- horse
 	weekly = "okbud:1070367873891041351",
@@ -104,6 +109,7 @@ guildTest = {
 }
 
 guildIdeas = {
+	guildId = "309088417466023936",
 	upvote = "upvote:539111244842532874",
 	downvote = "downvote:539111244414844929",
 	weekly = "Weekly:742160530353160192",
@@ -115,8 +121,8 @@ guildIdeas = {
 }
 
 guilds = {
-	["517339055831384084"] = guildTest,
-	["309088417466023936"] = guildIdeas,
+	[guildTest.guildId] = guildTest,
+	[guildIdeas.guildId] = guildIdeas,
 }
 
 function messageCanDoAnything(dataGuild, message)
@@ -134,7 +140,7 @@ function messageHandlerShowcase(message)
 	if dataGuild == nil then return end
 	alertme("showcase")
 	p(message.content)
-	if messageIsImage(message) then
+	if messageHasContent(message) then
 		async(message.addReaction, message, dataGuild.upvote)
 		if messageCanBeDownvoted(dataGuild, message) then
 			message:addReaction(dataGuild.downvote)
@@ -151,7 +157,7 @@ function messageHandlerWeekly(message)
 	if dataGuild == nil then return end
 	alertme("weekly")
 	p(message.content)
-	if messageIsImage(message) then
+	if messageHasContent(message) then
 		message:addReaction(dataGuild.weekly)
 	elseif messageCanDoAnything(dataGuild, message) then
 		-- keep it
@@ -161,6 +167,8 @@ function messageHandlerWeekly(message)
 end
 
 --------------------------------------------------
+-- Functions that return items.
+-- They are meant to have weighted randomness.
 
 local chances = {} -- [()->()]: number
 local function commit(chance, fn)
@@ -238,10 +246,6 @@ local function generator(fn, message, str, pos)
 	message:reply(table.concat(staticRope, "\n", 1, count))
 end
 
--- for the console
-function item(str) return generator(makeItem, msgConsole, tostring(str), 1) end
-function dungeon(str) return generator(makeDungeon, msgConsole, tostring(str), 1) end
-
 --------------------------------------------------
 
 local nextHelp = 0
@@ -255,7 +259,7 @@ function messageHandlerBots(message)
 	p(message.content)
 	local word, pos = str:match("^(%S+)()", 2)
 	if word == nil then
-		-- space between dot and word: do nothing
+		-- Space between dot and word: do nothing
 	elseif word == "item" then
 		generator(makeItem, message, str, pos)
 	elseif word == "dungeon" then
@@ -270,6 +274,7 @@ I manage the reactions in <#]] .. dataGuild.showcase .. [[> and <#]] .. dataGuil
 Read my source code and wordlist at: <https://github.com/Saiapatsu/ideasbotjr>
 To get a downvote, upvote your own message in #showcase (and then remove it because you should not self-upvote), write <:]] .. dataGuild.downvote .. [[> in your message (can't edit it in yet), ask an Unbound to downvote you or ask staff for the <@&]] .. dataGuild.roleDownvote .. [[> role.
 Write .item in this channel to get an item name and .dungeon to get a dungeon name.
+Write a number after the command to get multiple ideas.
 ]])
 	end
 end
@@ -345,8 +350,19 @@ function cls() print("\x1b[H\x1b[2J") end
 
 function uptime()
 	local dt = os.clock() - startTime
-	print(string.format("%.1f hours", dt / (60*60)))
+	print(string.format("%d days, %.1f hours",
+		dt / 86400,
+		(dt / 3600) % 24))
 end
+
+-- Watch me forget this function exists
+function sayBots(content)
+	client:getChannel(guildIdeas.bots):send(content)
+end
+
+-- Test item and dungeon in the console
+function item(str) return generator(makeItem, msgConsole, tostring(str), 1) end
+function dungeon(str) return generator(makeDungeon, msgConsole, tostring(str), 1) end
 
 --------------------------------------------------
 
