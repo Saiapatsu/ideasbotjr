@@ -37,8 +37,20 @@ function try(fn, ...)
 	end
 end
 
-function messageIsImage(message)
-	return message.attachment or message.embed or message.content:find("https?://")
+-- Whether a message is allowed to stay in an images-only channel
+function messageHasContent(message)
+	-- Message has an image or attachment of some sort
+	if message.attachment or message.embed then return true end
+	
+	-- Message has at least one link in it that's not an invite
+	for linkPos in message.content:gmatch("https?://()") do
+		-- That :// is not immediately followed by discord.gg
+		if linkPos and not message.content:match("discord%.gg", linkPos) then
+			return true
+		end
+	end
+	
+	return false
 end
 
 function scold(message)
