@@ -360,6 +360,24 @@ function sayBots(content)
 	client:getChannel(guildIdeas.bots):send(content)
 end
 
+function getMessage(url)
+	-- https://discord.com/channels/309088417466023936/520457693979213833/1146785162072424558
+	local guild, channel, message = url:match("(%d+)/(%d+)/(%d+)$")
+	if not guild then return end
+	local channel = client:getChannel(channel)
+	if not channel then return end
+	return channel:getMessage(message)
+end
+
+function recheck(url)
+	local message = getMessage(url)
+	if not message then
+		print("Can't find it")
+		return
+	end
+	return onMessageCreate(message)
+end
+
 -- Test item and dungeon in the console
 function item(str) return generator(makeItem, msgConsole, tostring(str), 1) end
 function dungeon(str) return generator(makeDungeon, msgConsole, tostring(str), 1) end
