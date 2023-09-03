@@ -1,6 +1,6 @@
 -- hot reload
 local env = getfenv()
-function reload() setfenv(assert(loadfile("funcs.lua")), env)() end
+function reload() setfenv(assert(loadfile("./funcs.lua")), env)() end
 r = reload -- shortcut
 reload()
 
@@ -14,7 +14,7 @@ client:on("reactionAdd", function(reaction, userId) return onReactionAdd(reactio
 local e = discordia.enums.gatewayIntent
 client:disableAllIntents()
 client:enableIntents(e.guilds, e.guildMessages, e.messageContent, e.guildMessageReactions)
-function run() client:run(require("fs").readFileSync("./TOKEN")) end
+function run() client:run(require("fs").readFileSync("./TOKEN"):match("[^\n]+")) end
 function stop() client:stop() end
 run()
 

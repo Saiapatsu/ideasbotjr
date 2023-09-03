@@ -183,10 +183,10 @@ local function append(a, b, ...)
 	return append(a, ...)
 end
 
-local listModObject = parseListFromFile "dict\\mod object" -- object only
-local listModLocationObject = parseListFromFile "dict\\mod location object" -- object and location common
-local listLocations = parseListFromFile "dict\\locations"
-local listObjects = parseListFromFile "dict\\objects"
+local listModObject = parseListFromFile "./dict/mod object" -- object only
+local listModLocationObject = parseListFromFile "./dict/mod location object" -- object and location common
+local listLocations = parseListFromFile "./dict/locations"
+local listObjects = parseListFromFile "./dict/objects"
 append(listModObject, listModLocationObject)
 
 local function juxtapose(a, b)
