@@ -6,7 +6,7 @@ reload()
 
 -- discordia one-time setup
 discordia = require "discordia"
-client = discordia.Client({logFile = "NUL"})
+client = discordia.Client({logFile = ""})
 client:on("ready", function() return onReady() end)
 client:on("messageCreate", function(message) return onMessageCreate(message) end)
 client:on("reactionAdd", function(reaction, userId) return onReactionAdd(reaction, userId) end)
@@ -18,7 +18,7 @@ function run() client:run(require("fs").readFileSync("./TOKEN"):match("[^\n]+"))
 function stop() client:stop() end
 run()
 
-startTime = os.clock()
+startTime = os.time()
 
 -- repl
 -- note: repl.lua has been modified to support passing an environment

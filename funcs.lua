@@ -349,7 +349,7 @@ end
 function cls() print("\x1b[H\x1b[2J") end
 
 function uptime()
-	local dt = os.clock() - startTime
+	local dt = os.time() - startTime
 	print(string.format("%d days, %.1f hours",
 		dt / 86400,
 		(dt / 3600) % 24))
