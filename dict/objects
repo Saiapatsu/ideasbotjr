@@ -51,6 +51,8 @@
 		Nail
 		Scythe
 		Sickle
+		Candle
+		Mechanism
 		# Glue
 		# Saw
 		# Ruler
@@ -85,6 +87,14 @@
 	# Throwable
 		Boomerang
 	Whip
+		Lash
+	# Body parts
+		Finger
+		Fingernails
+		Ear
+		Eye
+		Nose
+		Hand
 
 # Abilities
 	Cloak
