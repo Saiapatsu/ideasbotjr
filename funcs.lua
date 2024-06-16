@@ -104,7 +104,7 @@ guildTest = {
 	roleFreedom = "936745626048294923", -- rancid
 	roleDownvote = "1070364517604802671", -- redditor
 	showcase = "1070158816001396767", -- #boten
-	weekly = "1030063439160295435", -- #emoji
+	chWeekly = "1030063439160295435", -- #emoji
 	bots = "1070158816001396767", -- #boten
 }
 
@@ -116,7 +116,7 @@ guildIdeas = {
 	roleFreedom = "309090145099972608", -- unbound
 	roleDownvote = "1075535684368081108", -- downvote
 	showcase = "520457693979213833",
-	weekly = "742157612879183993",
+	chWeekly = "742157612879183993",
 	bots = "309121149592403980",
 }
 
@@ -270,7 +270,7 @@ function messageHandlerBots(message)
 		if now < nextHelp then return end
 		nextHelp = now + 10
 		message:reply([[
-I manage the reactions in <#]] .. dataGuild.showcase .. [[> and <#]] .. dataGuild.weekly .. [[> since 2023-02-01 and generate item ideas in <#]] .. dataGuild.bots .. [[ since 2023-04-20.
+I manage the reactions in <#]] .. dataGuild.showcase .. [[> and <#]] .. dataGuild.chWeekly .. [[> since 2023-02-01 and generate item ideas in <#]] .. dataGuild.bots .. [[> since 2023-04-20.
 Read my source code and wordlist at: <https://github.com/Saiapatsu/ideasbotjr>
 To get a downvote, upvote your own message in #showcase (and then remove it because you should not self-upvote), write <:]] .. dataGuild.downvote .. [[> in your message (can't edit it in yet), ask an Unbound to downvote you or ask staff for the <@&]] .. dataGuild.roleDownvote .. [[> role.
 Write .item in this channel to get an item name and .dungeon to get a dungeon name.
@@ -314,15 +314,15 @@ local guild = guildTest
 
 channelsMessage[guild.bots] = messageHandlerBots
 channelsReaction[guild.showcase] = reactionHandlerShowcase
-channelsReaction[guild.weekly] = reactionHandlerWeekly
+channelsReaction[guild.chWeekly] = reactionHandlerWeekly
 
 local guild = guildIdeas
 
 channelsMessage[guild.showcase] = messageHandlerShowcase
-channelsMessage[guild.weekly] = messageHandlerWeekly
+channelsMessage[guild.chWeekly] = messageHandlerWeekly
 channelsMessage[guild.bots] = messageHandlerBots
 channelsReaction[guild.showcase] = reactionHandlerShowcase
-channelsReaction[guild.weekly] = reactionHandlerWeekly
+channelsReaction[guild.chWeekly] = reactionHandlerWeekly
 
 --------------------------------------------------
 
