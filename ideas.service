@@ -1,5 +1,8 @@
 # cp /home/ideas/ideasbotjr/ideas.service /etc/systemd/system/ideas.service
 # systemctl daemon-reload && systemctl restart ideas && systemctl status ideas
+# References:
+# https://unix.stackexchange.com/questions/774809/get-access-to-console-of-application-that-is-auto-started
+# https://superuser.com/questions/1581577/running-two-tmux-sessions-as-systemd-service
 [Unit]
 Description=Ideas Bot Jr.
 After=network-online.target
@@ -13,7 +16,8 @@ User=ideas
 Group=ideas
 
 WorkingDirectory=/home/ideas/ideasbotjr
-ExecStart=/usr/bin/tmux new-session -d 'luvit main.lua'
+ExecStart=/usr/bin/tmux new-session -s ideas -d 'luvit main.lua'
+ExecStop=/usr/bin/tmux kill-session -t ideas
 
 [Install]
 WantedBy=multi-user.target
