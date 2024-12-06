@@ -8,15 +8,13 @@ Description=Ideas Bot Jr.
 After=network-online.target
 
 [Service]
-#RestartSec=2s
-#Restart=always
 Type=forking
 
 User=ideas
 Group=ideas
 
 WorkingDirectory=/home/ideas/ideasbotjr
-ExecStart=/usr/bin/tmux new-session -s ideas -d 'luvit main.lua'
+ExecStart=bash -c "tmux kill-session -t ideas; tmux new-session -s ideas -d 'luvit main.lua'"
 ExecStop=/usr/bin/tmux kill-session -t ideas
 
 [Install]
