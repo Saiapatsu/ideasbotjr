@@ -1,0 +1,19 @@
+# cp /home/ideas/ideasbotjr/ideas.service /etc/systemd/system/ideas.service
+# systemctl daemon-reload && systemctl restart ideas && systemctl status ideas
+[Unit]
+Description=Ideas Bot Jr.
+After=network-online.target
+
+[Service]
+#RestartSec=2s
+#Restart=always
+Type=forking
+
+User=ideas
+Group=ideas
+
+WorkingDirectory=/home/ideas/ideasbotjr
+ExecStart=/usr/bin/tmux new-session -d 'luvit main.lua'
+
+[Install]
+WantedBy=multi-user.target
